@@ -8,16 +8,22 @@ void* atm_thread (void* arg)
 
 }
 
-void open_account()
+void open_account(int id, int password, int init)
 {
-    lock(open_account_lock);
-    acount constructor;
-    unlock(open_account_lock);
+
+    if (account_map.find(id) =! account_map.end()){
+        cerr << this.id <<": Your transaction failed – account with the same id exists" << endl;
+    }
+    pthread_mutex_lock(&open_account_lock);
+    account newAcc = account(id,password,init);
+    account_map.insert(id,newAcc);
+    pthread_mutex_unlock(&open_account_lock);
+    //TODO print to log
 }
-void make_VIP()
+void make_VIP(int id,int pass)
 {
     check password;
-    set_VIP();
+    account_map.find(id)->set_VIP();
 }
 void deposit()
 {

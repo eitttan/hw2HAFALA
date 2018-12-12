@@ -5,6 +5,9 @@
 #ifndef HW2_ATMS_H
 #define HW2_ATMS_H
 
+# include "defines.h"
+# include "account.h"
+
 void* atm_thread (void* arg);      //TODO
 void open_account();      //TODO
 void make_VIP();      //TODO
