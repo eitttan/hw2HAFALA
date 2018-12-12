@@ -11,5 +11,5 @@
 #include <algorithm>
 #include <pthread.h>
 #include <mutex>
-
+#include <cstdbool>
 #endif //HW2_DEFINES_H
