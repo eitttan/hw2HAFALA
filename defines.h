@@ -12,10 +12,11 @@
 #include <pthread.h>
 #include <mutex>
 #include <cstdbool>
+#include "account.h"
 
 //global
 using namespace std;
-extern std::map <int,account> account_map;
+extern std::map <int,account*> account_map;
 extern pthread_mutex_t open_account_lock;
 extern pthread_mutex_t write_to_log_lock;
 

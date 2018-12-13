@@ -15,11 +15,12 @@ public:
     ~account();
     bool set_VIP();
     bool get_VIP();     //for fees
-    bool withdraw();        //TODO  --mutex
-    void deposit();         //tODO  --mutex
-    bool check_password() const;      //TODO  --read
-    int get_balance () const;       //TODO --read
-    int get_updated_balance () const;       //TODO --lock
+    int take_fee(int percentage);
+    bool withdraw(int amount);
+    void deposit(int amount);
+    bool check_password(int pass) const;
+    int get_balance () const;
+    int get_updated_balance ();
 private:
     int id;
     bool VIP;

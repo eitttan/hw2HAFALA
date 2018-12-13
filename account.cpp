@@ -27,25 +27,47 @@ bool account::get_VIP()
 {
     if (VIP || pthread_mutex_trylock(&VIP_locker))
         return true;
+    pthread_mutex_unlock(&VIP_locker);
     return false;
 }
-bool account::withdraw()
+bool account::withdraw(int amount)
 {
-
+    pthread_mutex_lock(&locker);
+    if (balance < amount)
+    {
+        pthread_mutex_unlock(&locker);
+        return false;
+    }
+    balance = balance - amount;
+    pthread_mutex_unlock(&locker);
+    return true;
 }
-void account::deposit()
+void account::deposit(int amount)
 {
-
+    pthread_mutex_lock(&locker);
+    balance = balance + amount;
+    pthread_mutex_unlock(&locker);
 }
-bool account::check_password() const
+int account::take_fee(int percentage)
 {
-
+    pthread_mutex_lock(&locker);
+    int fee = balance * percentage / 100;
+    balance = balance - fee;
+    pthread_mutex_unlock(&locker);
+    return fee;
+}
+bool account::check_password(int pass) const
+{
+    return (pass == password);
 }
 int account::get_balance () const
 {
-
+    return balance;
 }
-int account::get_updated_balance () const
+int account::get_updated_balance ()
 {
-
+    pthread_mutex_lock(&locker);
+    int bal = balance;
+    pthread_mutex_unlock(&locker);
+    return bal;
 }
