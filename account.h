@@ -12,15 +12,24 @@ using std::string;
 class account {
 public:
     account(int id, int password, int init);
+
     ~account();
+
     bool set_VIP();
+
     bool get_VIP();     //for fees
     int take_fee(int percentage);
+
     bool withdraw(int amount);
+
     void deposit(int amount);
+
     bool check_password(int pass) const;
-    int get_balance () const;
-    int get_updated_balance ();
+
+    int get_balance() const;
+
+    int get_updated_balance();
+
 private:
     int id;
     bool VIP;

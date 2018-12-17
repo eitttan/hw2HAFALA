@@ -16,4 +16,11 @@ void withdraw();      //TODO
 void check_balance();      //TODO
 void transfer();      //TODO
 
+class atm {
+public:
+    int id;
+    char *log;
+    atm(int id, char* log);
+};
+
 #endif //HW2_ATMS_H

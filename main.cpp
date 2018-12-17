@@ -2,14 +2,20 @@
 #include "bank.cpp"
 #include "ATMs.h"
 #include "account.h"
-#include "account.cpp"
 #include "defines.h"
 
+int main(int argc, char* argv[]) {
+    //argv[1] = num of ATMs
+    //argv[i] (i > 1) = input file of ATM i-1
 
+    //for the first tests of basic ATM
+    atm first = atm(1, "short_atm");
+    pthread_mutex_init(&open_account_lock, NULL);
+    pthread_mutex_init(&write_to_log_lock, NULL);
+    pthread_t atm_threads;
+    pthread_create(&atm_threads, NULL, atm_thread, &first);
+    pthread_join(atm_threads, NULL);
+    //all of this will be changed
 
-
-int main() {
-    std::cout << "Hello, hazut" << std::endl;
-    std::cout << "Hello, back" << std::endl;
     return 0;
 }

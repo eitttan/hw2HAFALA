@@ -5,7 +5,58 @@
 
 void* atm_thread (void* arg)
 {
-
+    int id;
+    char* log;
+    id = ((atm*)arg)->id;
+    log = ((atm*)arg)->log;
+    //-------------------//TODO
+    //there must be a better way for it
+    stringstream ss;
+    string s;
+    ss << log;
+    ss >> s;
+    std::ifstream infile(s);
+    //---------
+    string line;
+    while (std::getline(infile, line))
+    {
+        std::istringstream iss(line);
+        char a;
+        if (iss >> a)
+        {
+            if (a == 'O')
+            {
+                //open func and whatever else neede
+            }
+            else if(a == 'L')
+            {
+                //make VIP func and whatever else neede
+            }
+            else if(a == 'D')
+            {
+                //deposit func and whatever else neede
+            }
+            else if(a == 'W')
+            {
+                //withdraw func and whatever else neede
+            }
+            else if(a == 'B')
+            {
+                //check ballance func and whatever else neede
+            }
+            else if(a == 'T')
+            {
+                //transfer func and whatever else neede
+            }
+            else //error
+            {
+                //print something
+            }
+        }
+        else //error
+            exit(1);
+    }
+    pthread_exit(NULL);
 }
 
 void open_account(int id, int password, int init)
@@ -47,3 +98,6 @@ void transfer()
     acount::withdraw();
     account2::deposit();
 }
+
+atm::atm(int id, char* log): id(id), log(log)
+{}

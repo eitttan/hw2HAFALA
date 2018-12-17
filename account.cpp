@@ -5,14 +5,15 @@
 
 account::account(int id, int password, int init) : id(id), VIP(false), password(password), balance(init)
 {
-    pthread_mutex_init(&locker,NULL);
-    pthread_mutex_init(&VIP_locker,NULL);
+    if (pthread_mutex_init(&locker, NULL) || pthread_mutex_init(&VIP_locker, NULL))
+        //if initialize returned some value different then zero, it's an error
+        exit(1);
 }
 account::~account()
 {
-    pthread_mutex_destroy(&locker);
-    pthread_mutex_destroy(&VIP_locker);
-
+    if (pthread_mutex_destroy(&locker) || pthread_mutex_destroy(&VIP_locker))
+        //if destroy returned some value different then zero, it's an error
+        exit(1);
 }
 bool account::set_VIP()
 {
