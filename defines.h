@@ -13,13 +13,14 @@
 #include <mutex>
 #include <cstdbool>
 #include "account.h"
+#include "ATMs.h"
 #include <fstream>
 #include <sstream>
+#include <unistd.h>
 
 //global
 using namespace std;
 using std::string;
-extern std::map <account*, int > account_map;
 extern pthread_mutex_t open_account_lock;
 extern pthread_mutex_t write_to_log_lock;
 

@@ -38,6 +38,8 @@ private:
     pthread_mutex_t locker;
     pthread_mutex_t VIP_locker;
 
+    friend class bank;
+
 };
 
 #endif //HW2_ACCOUNT_H

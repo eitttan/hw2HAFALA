@@ -4,6 +4,8 @@
 #include "account.h"
 #include "defines.h"
 
+extern std::map <int,account* > account_map;
+
 int main(int argc, char* argv[]) {
     //argv[1] = num of ATMs
     //argv[i] (i > 1) = input file of ATM i-1

@@ -2,7 +2,7 @@
 // Created by user on 11/12/18.
 //
 #include "ATMs.h"
-
+#include "main.cpp"
 void* atm_thread (void* arg)
 {
     int id;
@@ -62,42 +62,66 @@ void* atm_thread (void* arg)
 void open_account(int id, int password, int init)
 {
 
-    if (account_map.find(id) =! account_map.end()){
-        cerr << this.id <<": Your transaction failed – account with the same id exists" << endl;
+    if (account_map.find(id) != account_map.end()){
+        cerr << id <<" : Your transaction failed – account with the same id exists" << endl;
     }
     pthread_mutex_lock(&open_account_lock);
-    account newAcc = account(id,password,init);
-    account_map.insert(id,newAcc);
+    account* newAcc =  new account(id,password,init);
+    account_map.insert( std::make_pair(id, newAcc));
     pthread_mutex_unlock(&open_account_lock);
     //TODO print to log
 }
 void make_VIP(int id,int pass)
 {
-    check password;
-    account_map.find(id)->set_VIP();
+    //TODO check password;
+    //TODO
+    /*    if (account_map.find(id) == account_map.end()){
+        cerr << id <<" : wrong id" << endl;
+    }*/
+    account* selAcc = account_map.find(id)->second;
+    selAcc->set_VIP();
 }
-void deposit()
+void deposit(int id,int pass,int amount)
 {
-    check password;
-    acount::deposit();
+    //TODO check password;
+    //TODO
+    /*    if (account_map.find(id) == account_map.end()){
+        cerr << id <<" : wrong id" << endl;
+    }*/
+    account* selAcc = account_map.find(id)->second;
+    selAcc->deposit(amount);
 }
-void withdraw()
+void withdraw(int id,int pass,int amount)
 {
-    check password;
-    acount::withdraw();
+    //TODO check password;
+    //TODO
+    /*    if (account_map.find(id) == account_map.end()){
+        cerr << id <<" : wrong id" << endl;
+    }*/
+    account* selAcc = account_map.find(id)->second;
+    selAcc->withdraw(amount);
 }
-void check_balance()
+void check_balance(int id,int pass)
 {
-    check password;
-    account::get_balance();
+    //TODO check password;
+    //TODO
+    /*    if (account_map.find(id) == account_map.end()){
+        cerr << id <<" : wrong id" << endl;
+    }*/
+    account* selAcc = account_map.find(id)->second;
+    selAcc->get_balance();
 }
-void transfer()
+void transfer(int source, int pass, int target, int amount)
 {
-    check password;
-    check account2;
-    acount::withdraw();
-    account2::deposit();
+    //TODO check password;
+    //TODO check account2  &1
+    account* sourceAcc = account_map.find(source)->second;
+    sourceAcc->withdraw(amount);
+    account* targetAcc = account_map.find(target)->second;
+    targetAcc->withdraw(amount);
 }
 
 atm::atm(int id, char* log): id(id), log(log)
-{}
+{
+
+}
