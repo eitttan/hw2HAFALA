@@ -3,11 +3,12 @@
 //
 #include "ATMs.h"
 #include "main.cpp"
+
 void* atm_thread (void* arg)
 {
-    int id;
+    int atm_id;
     char* log;
-    id = ((atm*)arg)->id;
+    atm_id = ((atm*)arg)->id;
     log = ((atm*)arg)->log;
     //-------------------//TODO
     //there must be a better way for it
@@ -18,51 +19,72 @@ void* atm_thread (void* arg)
     std::ifstream infile(s);
     //---------
     string line;
+    int id, password, amount, t_id;
+
     while (std::getline(infile, line))
     {
         std::istringstream iss(line);
         char a;
         if (iss >> a)
         {
-            if (a == 'O')
+            if (a == 'O')   //O <account id> <password> <amount>
             {
-                //open func and whatever else neede
+                if (!(iss >> id >> password >> amount))
+                    // not enough arguments
+                    continue;
+                open_account(atm_id, id, password, amount);
             }
-            else if(a == 'L')
+            else if(a == 'L')   //L <account id> <password>
             {
-                //make VIP func and whatever else neede
+                if (!(iss >> id >> password))
+                    // not enough arguments
+                    continue;
+                make_VIP(atm_id, id, password);
             }
-            else if(a == 'D')
+            else if(a == 'D')   //D <account id> <password> <amount>
             {
-                //deposit func and whatever else neede
+                if (!(iss >> id >> password >> amount))
+                    // not enough arguments
+                    continue;
+                deposit(atm_id, id, password, amount);
             }
-            else if(a == 'W')
+            else if(a == 'W')   //W <account id> <password> <amount>
             {
-                //withdraw func and whatever else neede
+                if (!(iss >> id >> password >> amount))
+                    // not enough arguments
+                    continue;
+                withdraw(atm_id, id, password, amount);
             }
-            else if(a == 'B')
+            else if(a == 'B')   //B <account id> <password>
             {
-                //check ballance func and whatever else neede
+                if (!(iss >> id >> password))
+                    // not enough arguments
+                    continue;
+                check_balance(atm_id, id, password);
             }
-            else if(a == 'T')
+            else if(a == 'T')   //T <account id> <password> <target account id> <amount>
             {
-                //transfer func and whatever else neede
+                if (!(iss >> id >> password >> t_id >> amount))
+                    // not enough arguments
+                    continue;
+                transfer(atm_id, id, password, amount);
             }
-            else //error
+            else //no such command
             {
-                //print something
+                continue;
             }
         }
-        else //error
-            exit(1);
+        else //empty line
+            continue;
     }
     pthread_exit(NULL);
 }
 
-void open_account(int id, int password, int init)
+void open_account(int atm_id, int id, int password, int init)
 {
 
-    if (account_map.find(id) != account_map.end()){
+    if (account_map.find(id) != account_map.end())
+    {
         cerr << id <<" : Your transaction failed – account with the same id exists" << endl;
     }
     pthread_mutex_lock(&open_account_lock);
@@ -71,7 +93,7 @@ void open_account(int id, int password, int init)
     pthread_mutex_unlock(&open_account_lock);
     //TODO print to log
 }
-void make_VIP(int id,int pass)
+void make_VIP(int atm_id, int id,int pass)
 {
     //TODO check password;
     //TODO
@@ -81,7 +103,7 @@ void make_VIP(int id,int pass)
     account* selAcc = account_map.find(id)->second;
     selAcc->set_VIP();
 }
-void deposit(int id,int pass,int amount)
+void deposit(int atm_id, int id,int pass,int amount)
 {
     //TODO check password;
     //TODO
@@ -91,7 +113,7 @@ void deposit(int id,int pass,int amount)
     account* selAcc = account_map.find(id)->second;
     selAcc->deposit(amount);
 }
-void withdraw(int id,int pass,int amount)
+void withdraw(int atm_id, int id,int pass,int amount)
 {
     //TODO check password;
     //TODO
@@ -101,7 +123,7 @@ void withdraw(int id,int pass,int amount)
     account* selAcc = account_map.find(id)->second;
     selAcc->withdraw(amount);
 }
-void check_balance(int id,int pass)
+void check_balance(int atm_id, int id,int pass)
 {
     //TODO check password;
     //TODO
@@ -111,7 +133,7 @@ void check_balance(int id,int pass)
     account* selAcc = account_map.find(id)->second;
     selAcc->get_balance();
 }
-void transfer(int source, int pass, int target, int amount)
+void transfer(int atm_id, int source, int pass, int target, int amount)
 {
     //TODO check password;
     //TODO check account2  &1
@@ -122,6 +144,4 @@ void transfer(int source, int pass, int target, int amount)
 }
 
 atm::atm(int id, char* log): id(id), log(log)
-{
-
-}
+{}
