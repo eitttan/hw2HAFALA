@@ -19,8 +19,8 @@ void transfer(int atm_id, int source, int pass, int target, int amount);      //
 class atm {
 public:
     int id;
-    char *log;
-    atm(int id, char* log);
+    char *input;
+    atm(int id, char* input);
 };
 
 #endif //HW2_ATMS_H

@@ -7,14 +7,14 @@
 void* atm_thread (void* arg)
 {
     int atm_id;
-    char* log;
+    char* input;
     atm_id = ((atm*)arg)->id;
-    log = ((atm*)arg)->log;
+    input = ((atm*)arg)->input;
     //-------------------//TODO
     //there must be a better way for it
     stringstream ss;
     string s;
-    ss << log;
+    ss << input;
     ss >> s;
     std::ifstream infile(s);
     //---------

@@ -5,6 +5,7 @@
 #include "defines.h"
 
 extern std::map <int,account* > account_map;
+extern ofstream log_file("log.txt");
 
 int main(int argc, char* argv[]) {
     //argv[1] = num of ATMs
