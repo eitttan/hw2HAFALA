@@ -1,5 +1,5 @@
 
-#include "bank.cpp"
+//#include "bank.cpp"
 #include "ATMs.h"
 #include "account.h"
 #include "defines.h"
@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&write_to_log_lock, NULL);
 
     //for the first tests of basic ATM
-    atm first = atm(1, "short_atm");
+    atm first = atm(1, "short_atm.txt");
     pthread_t atm_threads;
     pthread_create(&atm_threads, NULL, atm_thread, (void*)&first);
     pthread_join(atm_threads, NULL);

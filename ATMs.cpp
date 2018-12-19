@@ -15,8 +15,9 @@ void* atm_thread (void* arg)
     string line;
     int id, password, amount, t_id;
 
-    while (std::getline(infile, line))
+    while (!infile.eof())
     {
+        std::getline(infile, line);
         std::istringstream iss(line);
         char a;
         if (iss >> a)
@@ -81,14 +82,14 @@ void open_account(int atm_id, int id, int password, int init)
     if (account_map.find(id) != account_map.end())
     {
         pthread_mutex_unlock(&open_account_lock);
-        to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account with the same id exists" ;
+        to_print = "Error " + to_string(atm_id) + ": Your transaction failed – account with the same id exists" ;
     }
     else
     {
         account *newAcc = new account(id, password, init);
         account_map.insert(std::make_pair(id, newAcc));
         pthread_mutex_unlock(&open_account_lock);
-        to_print = to_string(atm_id) + " : New account id is " + to_string(id) + " with password ";
+        to_print = to_string(atm_id) + ": New account id is " + to_string(id) + " with password ";
         to_print += to_string(password) + " and initial balance " + to_string(init);
     }
     print_to_log(to_print);
@@ -103,7 +104,7 @@ void make_VIP(int atm_id, int id,int password)
         else    //wrong password
         {
             string to_print;
-            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print = "Error " + to_string(atm_id) + ": Your transaction failed – password for account id ";
             to_print += to_string(id) + " is incorrect";
             print_to_log(to_print);
         }
@@ -118,12 +119,12 @@ void deposit(int atm_id, int id,int password,int amount)
         if (selAcc->check_password(password))
         {
             int balance = selAcc->deposit(amount);
-            to_print = to_string(atm_id) + " : Account " + to_string(id) + " new balance is " + to_string(balance);
+            to_print = to_string(atm_id) + ": Account " + to_string(id) + " new balance is " + to_string(balance);
             to_print += " after " + to_string(amount) + " $ was deposited";
         }
         else    //wrong password
         {
-            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print = "Error " + to_string(atm_id) + ": Your transaction failed – password for account id ";
             to_print += to_string(id) + " is incorrect";
         }
         print_to_log(to_print);
@@ -140,18 +141,18 @@ void withdraw(int atm_id, int id,int password,int amount)
             int balance = selAcc->withdraw(amount);
             if (balance == -1)  //not enough money in account
             {
-                to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account id " +  to_string(id);
+                to_print = "Error " + to_string(atm_id) + ": Your transaction failed – account id " +  to_string(id);
                 to_print += " balance is lower than " + to_string(amount);
             }
             else
             {
-                to_print = to_string(atm_id) + " : Account " + to_string(id) + " new balance is " + to_string(balance);
+                to_print = to_string(atm_id) + ": Account " + to_string(id) + " new balance is " + to_string(balance);
                 to_print += " after " + to_string(amount) + " $ was withdrew";
             }
         }
         else    //wrong password
         {
-            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print = "Error " + to_string(atm_id) + ": Your transaction failed – password for account id ";
             to_print += to_string(id) + " is incorrect";
         }
         print_to_log(to_print);
@@ -167,11 +168,11 @@ void check_balance(int atm_id, int id,int password)
         if (selAcc->check_password(password))
         {
             balance = selAcc->get_balance();
-            to_print = to_string(atm_id) + " : Account " + to_string(id) + " balance is " + to_string(balance);
+            to_print = to_string(atm_id) + ": Account " + to_string(id) + " balance is " + to_string(balance);
         }
         else    //wrong password
         {
-            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print = "Error " + to_string(atm_id) + ": Your transaction failed – password for account id ";
             to_print += to_string(id) + " is incorrect";
         }
         print_to_log(to_print);
@@ -191,20 +192,20 @@ void transfer(int atm_id, int source, int password, int target, int amount)
             sourceBalance = sourceAcc->withdraw(amount);
             if (sourceBalance == -1)  //not enough money in account
             {
-                to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account id ";
+                to_print = "Error " + to_string(atm_id) + ": Your transaction failed – account id ";
                 to_print += to_string(source) + " balance is lower than " + to_string(amount);
             }
             else
             {
                 targetBalance = targetAcc->deposit(amount);
-                to_print = to_string(atm_id) + " : Transfer " + to_string(amount) + " from account ";
+                to_print = to_string(atm_id) + ": Transfer " + to_string(amount) + " from account ";
                 to_print += to_string(source) + " to account " + to_string(target) + " new account balance is ";
                 to_print += to_string(sourceBalance) + " new target account balance is " + to_string(targetBalance);
             }
         }
         else    //wrong password
         {
-            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print = "Error " + to_string(atm_id) + ": Your transaction failed – password for account id ";
             to_print += to_string(source) + " is incorrect";
         }
         print_to_log(to_print);
@@ -222,7 +223,7 @@ bool check_account(int atm_id, int id)
     if (account_map.find(id) == account_map.end())
     {
         string to_print;
-        to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account id " + to_string(id);
+        to_print = "Error " + to_string(atm_id) + ": Your transaction failed – account id " + to_string(id);
         to_print += " does not exist";
         print_to_log(to_print);
         return false;
