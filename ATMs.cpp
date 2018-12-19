@@ -2,22 +2,16 @@
 // Created by user on 11/12/18.
 //
 #include "ATMs.h"
-#include "main.cpp"
+//#include "main.cpp"
+//ofstream log_file("log.txt");
 
 void* atm_thread (void* arg)
 {
     int atm_id;
-    char* input;
+    string input;
     atm_id = ((atm*)arg)->id;
     input = ((atm*)arg)->input;
-    //-------------------//TODO
-    //there must be a better way for it
-    stringstream ss;
-    string s;
-    ss << input;
-    ss >> s;
-    std::ifstream infile(s);
-    //---------
+    std::ifstream infile(input);
     string line;
     int id, password, amount, t_id;
 
@@ -97,7 +91,7 @@ void open_account(int atm_id, int id, int password, int init)
         to_print = to_string(atm_id) + " : New account id is " + to_string(id) + " with password ";
         to_print += to_string(password) + " and initial balance " + to_string(init);
     }
-    print(to_print);
+    print_to_log(to_print);
 }
 void make_VIP(int atm_id, int id,int password)
 {
@@ -111,7 +105,7 @@ void make_VIP(int atm_id, int id,int password)
             string to_print;
             to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
             to_print += to_string(id) + " is incorrect";
-            print(to_print);
+            print_to_log(to_print);
         }
     }
 }
@@ -132,7 +126,7 @@ void deposit(int atm_id, int id,int password,int amount)
             to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
             to_print += to_string(id) + " is incorrect";
         }
-        print(to_print);
+        print_to_log(to_print);
     }
 }
 void withdraw(int atm_id, int id,int password,int amount)
@@ -160,7 +154,7 @@ void withdraw(int atm_id, int id,int password,int amount)
             to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
             to_print += to_string(id) + " is incorrect";
         }
-        print(to_print);
+        print_to_log(to_print);
     }
 }
 void check_balance(int atm_id, int id,int password)
@@ -180,7 +174,7 @@ void check_balance(int atm_id, int id,int password)
             to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
             to_print += to_string(id) + " is incorrect";
         }
-        print(to_print);
+        print_to_log(to_print);
     }
 }
 void transfer(int atm_id, int source, int password, int target, int amount)
@@ -213,11 +207,11 @@ void transfer(int atm_id, int source, int password, int target, int amount)
             to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
             to_print += to_string(source) + " is incorrect";
         }
-        print(to_print);
+        print_to_log(to_print);
     }
 }
 
-void print(string str)
+void print_to_log(string str)
 {
     pthread_mutex_lock(&write_to_log_lock);
     log_file << str << endl;
@@ -230,7 +224,7 @@ bool check_account(int atm_id, int id)
         string to_print;
         to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account id " + to_string(id);
         to_print += " does not exist";
-        print(to_print);
+        print_to_log(to_print);
         return false;
     }
     return  true;
@@ -238,5 +232,5 @@ bool check_account(int atm_id, int id)
 
 
 
-atm::atm(int id, char* input): id(id), input(input)
+atm::atm(int id, string input): id(id), input(input)
 {}

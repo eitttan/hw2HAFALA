@@ -43,4 +43,6 @@ private:
 
 };
 
+extern std::map <int, account* > account_map;
+
 #endif //HW2_ACCOUNT_H

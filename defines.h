@@ -17,11 +17,14 @@
 #include <fstream>
 #include <sstream>
 #include <unistd.h>
+#include <string>
 
 //global
 using namespace std;
 using std::string;
 extern pthread_mutex_t open_account_lock;
 extern pthread_mutex_t write_to_log_lock;
+//extern std::map <int,account* > account_map;
+extern ofstream log_file;
 
 #endif //HW2_DEFINES_H
