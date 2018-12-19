@@ -18,6 +18,9 @@ public:
     bool set_VIP();
 
     bool get_VIP();     //for fees
+
+    bool check_password(int pass);
+
     int take_fee(int percentage);
 
     bool withdraw(int amount);

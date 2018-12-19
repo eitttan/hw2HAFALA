@@ -67,7 +67,7 @@ void* atm_thread (void* arg)
                 if (!(iss >> id >> password >> t_id >> amount))
                     // not enough arguments
                     continue;
-                transfer(atm_id, id, password, amount);
+                transfer(atm_id, id, password, t_id, amount);
             }
             else //no such command
             {
@@ -82,20 +82,28 @@ void* atm_thread (void* arg)
 
 void open_account(int atm_id, int id, int password, int init)
 {
-
+    string to_print;
+    pthread_mutex_lock(&open_account_lock);
     if (account_map.find(id) != account_map.end())
     {
-        cerr << id <<" : Your transaction failed – account with the same id exists" << endl;
+        pthread_mutex_unlock(&open_account_lock);
+        to_print = "Eror " + atm_id + " : Your transaction failed – account with the same id exists" ;
     }
-    pthread_mutex_lock(&open_account_lock);
-    account* newAcc =  new account(id,password,init);
-    account_map.insert( std::make_pair(id, newAcc));
-    pthread_mutex_unlock(&open_account_lock);
-    //TODO print to log
+    else
+    {
+        account *newAcc = new account(id, password, init);
+        account_map.insert(std::make_pair(id, newAcc));
+        pthread_mutex_unlock(&open_account_lock);
+        to_print = atm_id + " : New account id is " + id + " with password " + password;
+        to_print += " and initial balance " + init;
+    }
+    print(to_print);
 }
 void make_VIP(int atm_id, int id,int pass)
 {
-    //TODO check password;
+    if (account_map.find(id) == account_map.end())
+
+        //TODO check password;
     //TODO
     /*    if (account_map.find(id) == account_map.end()){
         cerr << id <<" : wrong id" << endl;
@@ -142,6 +150,12 @@ void transfer(int atm_id, int source, int pass, int target, int amount)
     account* targetAcc = account_map.find(target)->second;
     targetAcc->withdraw(amount);
 }
+void print(string str)
+{
+    pthread_mutex_lock(&write_to_log_lock);
+    log_file << str << endl;
+    pthread_mutex_unlock(&write_to_log_lock);
+}
 
-atm::atm(int id, char* log): id(id), log(log)
+atm::atm(int id, char* input): id(id), input(input)
 {}

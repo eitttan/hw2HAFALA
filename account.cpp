@@ -15,6 +15,10 @@ account::~account()
         //if destroy returned some value different then zero, it's an error
         exit(1);
 }
+bool account::check_password(int pass)
+{
+    return (pass == password);
+}
 bool account::set_VIP()
 {
     if (VIP)
