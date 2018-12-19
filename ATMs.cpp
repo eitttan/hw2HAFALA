@@ -87,75 +87,156 @@ void open_account(int atm_id, int id, int password, int init)
     if (account_map.find(id) != account_map.end())
     {
         pthread_mutex_unlock(&open_account_lock);
-        to_print = "Eror " + atm_id + " : Your transaction failed – account with the same id exists" ;
+        to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account with the same id exists" ;
     }
     else
     {
         account *newAcc = new account(id, password, init);
         account_map.insert(std::make_pair(id, newAcc));
         pthread_mutex_unlock(&open_account_lock);
-        to_print = atm_id + " : New account id is " + id + " with password " + password;
-        to_print += " and initial balance " + init;
+        to_print = to_string(atm_id) + " : New account id is " + to_string(id) + " with password ";
+        to_print += to_string(password) + " and initial balance " + to_string(init);
     }
     print(to_print);
 }
-void make_VIP(int atm_id, int id,int pass)
+void make_VIP(int atm_id, int id,int password)
 {
-    if (account_map.find(id) == account_map.end())
+    if (check_account(atm_id, id)) //valid account
+    {
+        account *selAcc = account_map.find(id)->second;
+        if (selAcc->check_password(password))
+            selAcc->set_VIP();
+        else    //wrong password
+        {
+            string to_print;
+            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print += to_string(id) + " is incorrect";
+            print(to_print);
+        }
+    }
+}
+void deposit(int atm_id, int id,int password,int amount)
+{
+    string to_print;
+    if (check_account(atm_id, id)) //valid account
+    {
+        account *selAcc = account_map.find(id)->second;
+        if (selAcc->check_password(password))
+        {
+            int balance = selAcc->deposit(amount);
+            to_print = to_string(atm_id) + " : Account " + to_string(id) + " new balance is " + to_string(balance);
+            to_print += " after " + to_string(amount) + " $ was deposited";
+        }
+        else    //wrong password
+        {
+            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print += to_string(id) + " is incorrect";
+        }
+        print(to_print);
+    }
+}
+void withdraw(int atm_id, int id,int password,int amount)
+{
+    string to_print;
+    if (check_account(atm_id, id)) //valid account
+    {
+        account *selAcc = account_map.find(id)->second;
+        if (selAcc->check_password(password))
+        {
+            int balance = selAcc->withdraw(amount);
+            if (balance == -1)  //not enough money in account
+            {
+                to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account id " +  to_string(id);
+                to_print += " balance is lower than " + to_string(amount);
+            }
+            else
+            {
+                to_print = to_string(atm_id) + " : Account " + to_string(id) + " new balance is " + to_string(balance);
+                to_print += " after " + to_string(amount) + " $ was withdrew";
+            }
+        }
+        else    //wrong password
+        {
+            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print += to_string(id) + " is incorrect";
+        }
+        print(to_print);
+    }
+}
+void check_balance(int atm_id, int id,int password)
+{
+    string to_print;
+    int balance;
+    if (check_account(atm_id, id)) //valid account
+    {
+        account *selAcc = account_map.find(id)->second;
+        if (selAcc->check_password(password))
+        {
+            balance = selAcc->get_balance();
+            to_print = to_string(atm_id) + " : Account " + to_string(id) + " balance is " + to_string(balance);
+        }
+        else    //wrong password
+        {
+            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print += to_string(id) + " is incorrect";
+        }
+        print(to_print);
+    }
+}
+void transfer(int atm_id, int source, int password, int target, int amount)
+{
+    string to_print;
+    int sourceBalance;
+    int targetBalance;
+    if (check_account(atm_id, source) && check_account(atm_id, target)) //both are valid accounts
+    {
+        account* sourceAcc = account_map.find(source)->second;
+        account* targetAcc = account_map.find(target)->second;
+        if (sourceAcc->check_password(password))
+        {
+            sourceBalance = sourceAcc->withdraw(amount);
+            if (sourceBalance == -1)  //not enough money in account
+            {
+                to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account id ";
+                to_print += to_string(source) + " balance is lower than " + to_string(amount);
+            }
+            else
+            {
+                targetBalance = targetAcc->deposit(amount);
+                to_print = to_string(atm_id) + " : Transfer " + to_string(amount) + " from account ";
+                to_print += to_string(source) + " to account " + to_string(target) + " new account balance is ";
+                to_print += to_string(sourceBalance) + " new target account balance is " + to_string(targetBalance);
+            }
+        }
+        else    //wrong password
+        {
+            to_print = "Error " + to_string(atm_id) + " : Your transaction failed – password for account id ";
+            to_print += to_string(source) + " is incorrect";
+        }
+        print(to_print);
+    }
+}
 
-        //TODO check password;
-    //TODO
-    /*    if (account_map.find(id) == account_map.end()){
-        cerr << id <<" : wrong id" << endl;
-    }*/
-    account* selAcc = account_map.find(id)->second;
-    selAcc->set_VIP();
-}
-void deposit(int atm_id, int id,int pass,int amount)
-{
-    //TODO check password;
-    //TODO
-    /*    if (account_map.find(id) == account_map.end()){
-        cerr << id <<" : wrong id" << endl;
-    }*/
-    account* selAcc = account_map.find(id)->second;
-    selAcc->deposit(amount);
-}
-void withdraw(int atm_id, int id,int pass,int amount)
-{
-    //TODO check password;
-    //TODO
-    /*    if (account_map.find(id) == account_map.end()){
-        cerr << id <<" : wrong id" << endl;
-    }*/
-    account* selAcc = account_map.find(id)->second;
-    selAcc->withdraw(amount);
-}
-void check_balance(int atm_id, int id,int pass)
-{
-    //TODO check password;
-    //TODO
-    /*    if (account_map.find(id) == account_map.end()){
-        cerr << id <<" : wrong id" << endl;
-    }*/
-    account* selAcc = account_map.find(id)->second;
-    selAcc->get_balance();
-}
-void transfer(int atm_id, int source, int pass, int target, int amount)
-{
-    //TODO check password;
-    //TODO check account2  &1
-    account* sourceAcc = account_map.find(source)->second;
-    sourceAcc->withdraw(amount);
-    account* targetAcc = account_map.find(target)->second;
-    targetAcc->withdraw(amount);
-}
 void print(string str)
 {
     pthread_mutex_lock(&write_to_log_lock);
     log_file << str << endl;
     pthread_mutex_unlock(&write_to_log_lock);
 }
+bool check_account(int atm_id, int id)
+{
+    if (account_map.find(id) == account_map.end())
+    {
+        string to_print;
+        to_print = "Error " + to_string(atm_id) + " : Your transaction failed – account id " + to_string(id);
+        to_print += " does not exist";
+        print(to_print);
+        return false;
+    }
+    return  true;
+}
+
+
 
 atm::atm(int id, char* input): id(id), input(input)
 {}

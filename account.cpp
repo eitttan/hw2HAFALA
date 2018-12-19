@@ -15,10 +15,6 @@ account::~account()
         //if destroy returned some value different then zero, it's an error
         exit(1);
 }
-bool account::check_password(int pass)
-{
-    return (pass == password);
-}
 bool account::set_VIP()
 {
     if (VIP)
@@ -35,23 +31,26 @@ bool account::get_VIP()
     pthread_mutex_unlock(&VIP_locker);
     return false;
 }
-bool account::withdraw(int amount)
+int account::withdraw(int amount)
 {
     pthread_mutex_lock(&locker);
     if (balance < amount)
     {
         pthread_mutex_unlock(&locker);
-        return false;
+        return -1;
     }
     balance = balance - amount;
+    int ret = balance;
     pthread_mutex_unlock(&locker);
-    return true;
+    return ret;
 }
-void account::deposit(int amount)
+int account::deposit(int amount)
 {
     pthread_mutex_lock(&locker);
     balance = balance + amount;
+    int ret = balance;
     pthread_mutex_unlock(&locker);
+    return ret;
 }
 int account::take_fee(int percentage)
 {

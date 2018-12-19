@@ -1,7 +1,7 @@
 //
 // Created by user on 11/12/18.
 //
-
+/*
 # include "defines.h"
 # include "ATMs.h"
 # include "account.h"
@@ -25,7 +25,7 @@ void* fees ()
     sleep(3);
     fees();
 }
-
+*/
 /*
 void* print(void* arg)
 {
