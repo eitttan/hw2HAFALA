@@ -185,11 +185,25 @@ void transfer(int atm_id, int source, int password, int target, int amount)
     int targetBalance;
     if (check_account(atm_id, source) && check_account(atm_id, target)) //both are valid accounts
     {
+        account* first_lock;
+        account* second_lock;
         account* sourceAcc = account_map.find(source)->second;
         account* targetAcc = account_map.find(target)->second;
         if (sourceAcc->check_password(password))
         {
-            sourceBalance = sourceAcc->withdraw(amount);
+            if (source < target)
+            {
+                first_lock = sourceAcc;
+                second_lock = targetAcc;
+            }
+            else
+            {
+                first_lock = targetAcc;
+                second_lock = sourceAcc;
+            }
+            first_lock->lock();
+            second_lock->lock();
+            sourceBalance = sourceAcc->transfer(-1*amount);
             if (sourceBalance == -1)  //not enough money in account
             {
                 to_print = "Error " + to_string(atm_id) + ": Your transaction failed – account id ";
@@ -197,11 +211,13 @@ void transfer(int atm_id, int source, int password, int target, int amount)
             }
             else
             {
-                targetBalance = targetAcc->deposit(amount);
+                targetBalance = targetAcc->transfer(amount);
                 to_print = to_string(atm_id) + ": Transfer " + to_string(amount) + " from account ";
                 to_print += to_string(source) + " to account " + to_string(target) + " new account balance is ";
                 to_print += to_string(sourceBalance) + " new target account balance is " + to_string(targetBalance);
             }
+            first_lock->unlock();
+            second_lock->unlock();
         }
         else    //wrong password
         {

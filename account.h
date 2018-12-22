@@ -27,9 +27,13 @@ public:
 
     bool check_password(int pass) const;
 
-    int get_balance() const;
+    int get_balance();
+    //transfer needs to happen "atomicly" for both accounts
+    void lock();
 
-    int get_updated_balance();
+    void unlock();
+
+    int transfer(int amount);
 
 private:
     int id;
@@ -38,7 +42,8 @@ private:
     int balance;
     pthread_mutex_t locker;
     pthread_mutex_t VIP_locker;
-
+    pthread_mutex_t readers;
+    int readers_num;
     friend class bank;
 
 };
