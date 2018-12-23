@@ -1,5 +1,5 @@
 
-//#include "bank.cpp"
+#include "bank.cpp"
 #include "ATMs.h"
 #include "account.h"
 #include "defines.h"
@@ -19,7 +19,10 @@ int main(int argc, char* argv[]) {
     atm first = atm(1, "short_atm.txt");
     pthread_t atm_threads;
     pthread_create(&atm_threads, NULL, atm_thread, (void*)&first);
+    pthread_t bank_thread;
+    pthread_create(&bank_thread, NULL, fees, NULL);
     pthread_join(atm_threads, NULL);
+    pthread_join(bank_thread, NULL);
     //all of this will be changed
 
     return 0;

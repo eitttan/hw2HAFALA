@@ -2,8 +2,7 @@
 // Created by user on 11/12/18.
 //
 #include "ATMs.h"
-//#include "main.cpp"
-//ofstream log_file("log.txt");
+
 
 void* atm_thread (void* arg)
 {
@@ -71,6 +70,7 @@ void* atm_thread (void* arg)
         }
         else //empty line
             continue;
+        usleep(atm_sleep);
     }
     pthread_exit(NULL);
 }
@@ -226,6 +226,7 @@ void transfer(int atm_id, int source, int password, int target, int amount)
         }
         print_to_log(to_print);
     }
+    pthread_exit(NULL);
 }
 
 void print_to_log(string str)

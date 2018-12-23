@@ -24,7 +24,10 @@ using namespace std;
 using std::string;
 extern pthread_mutex_t open_account_lock;
 extern pthread_mutex_t write_to_log_lock;
-//extern std::map <int,account* > account_map;
 extern ofstream log_file;
+//extern int bank_balance;
 
+#define atm_sleep 100000
+#define fee_sleep 3000000
+#define print_sleep 500000
 #endif //HW2_DEFINES_H
