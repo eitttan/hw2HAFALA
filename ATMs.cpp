@@ -27,7 +27,7 @@ void* atm_thread (void* arg)
                     // not enough arguments
                     continue;
                 open_account(atm_id, id, password, amount);
-                usleep(atm_sleep);
+                sleep(atm_sleep);
 
             }
             else if(a == 'L')   //L <account id> <password>
@@ -82,7 +82,7 @@ void* atm_thread (void* arg)
         }
         else //empty line
             continue;
-        usleep(atm_sleep);
+       // usleep(atm_sleep);
     }
     pthread_exit(NULL);
 }
@@ -244,6 +244,7 @@ void transfer(int atm_id, int source, int password, int target, int amount)
 void print_to_log(string str)
 {
     pthread_mutex_lock(&write_to_log_lock);
+   // log_file << to_string((clock()))<<" :" ;
     log_file << str << endl;
     pthread_mutex_unlock(&write_to_log_lock);
 }

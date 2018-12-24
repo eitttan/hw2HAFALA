@@ -19,6 +19,8 @@
 #include <sstream>
 #include <unistd.h>
 #include <string>
+#include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC */
+
 
 //global
 using namespace std;
@@ -26,9 +28,12 @@ using std::string;
 extern pthread_mutex_t open_account_lock;
 extern pthread_mutex_t write_to_log_lock;
 extern ofstream log_file;
+
+extern clock_t start;
+
 //extern int bank_balance;
 
-#define atm_sleep 1000000
-#define fee_sleep 300000
+#define atm_sleep 100000
+#define fee_sleep 3000000
 #define print_sleep 500000
 #endif //HW2_DEFINES_H

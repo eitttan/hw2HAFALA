@@ -13,6 +13,7 @@ pthread_mutex_t open_account_lock;
 pthread_mutex_t write_to_log_lock;
 
 int main(int argc, char* argv[]) {
+    // start = clock();
     //argv[1] = num of ATMs
     //argv[i] (i > 1) = input file of ATM i-1   --check if it comes as string or char*, if char* convert to string
     pthread_mutex_init(&open_account_lock, NULL);
@@ -48,8 +49,8 @@ int main(int argc, char* argv[]) {
         pthread_join(atm_threads[i], NULL);
 
     }
-    pthread_join(bank_thread, NULL);
-    pthread_join(print_thread, NULL);
+    //pthread_join(bank_thread, NULL);
+    //pthread_join(print_thread, NULL);
     //all of this will be changed
 
     return 0;

@@ -55,7 +55,9 @@ void* print(void* arg)
 
         }
         to_print += "The bank has " + to_string(bank_balance) +"$";
-        print_to_log(to_print);
+        printf("\033[2J");
+        printf("\033[1;1H");
+        cout<< to_print <<endl;
         usleep(print_sleep);
 
     }
