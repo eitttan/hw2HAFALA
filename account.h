@@ -30,6 +30,9 @@ public:
     int get_pass() const;
 
     int get_balance();
+
+    int get_balance_for_print() const;
+
     //transfer needs to happen "atomicly" for both accounts
     void lock();
 

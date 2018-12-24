@@ -21,7 +21,7 @@ void* fees (void* arg)
     while(true)
         // maybe we can join in the main only the atms and that way the program will finish even though this loop is endless
     {
-        sleep(3);
+        usleep(fee_sleep);
         string to_print="";
         for (std::map<int, account *>::iterator it = account_map.begin(); it != account_map.end(); it++) {
             account *currAcc = it->second;
@@ -44,16 +44,17 @@ void* print(void* arg)
     while(true)
         // maybe we can join in the main only the atms and that way the program will finish even though this loop is endless
     {
+        usleep(print_sleep);
         string to_print;
         to_print = "Current bank status \n";
         for (std::map<int, account *>::iterator it = account_map.begin(); it != account_map.end(); it++)
         {
-            it->second->lock();
+            (it->second)->lock();
         }
         for (std::map<int, account *>::iterator it = account_map.begin(); it != account_map.end(); it++) {
             account *currAcc = it->second;
             to_print += "Account " + to_string(it->first) + ": Balance - ";
-            to_print += to_string(currAcc->get_balance()) + " $ , Account Password - " +
+            to_print += to_string(currAcc->get_balance_for_print()) + " $ , Account Password - " +
                         to_string(currAcc->get_pass()) + "\n";
 
         }
@@ -63,10 +64,8 @@ void* print(void* arg)
         cout<< to_print <<endl;
         for (std::map<int, account *>::iterator it = account_map.begin(); it != account_map.end(); it++)
         {
-            it->second->unlock();
+            (it->second)->unlock();
         }
-        usleep(print_sleep);
-
     }
     //pthread_exit(NULL);
 }

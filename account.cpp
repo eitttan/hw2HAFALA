@@ -90,6 +90,10 @@ int account::get_balance ()
     pthread_mutex_unlock(&readers);
     return bal;
 }
+int account::get_balance_for_print() const
+{
+    return balance;
+}
 
 void account::lock()
 {
