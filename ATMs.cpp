@@ -233,7 +233,6 @@ void transfer(int atm_id, int source, int password, int target, int amount)
         }
         print_to_log(to_print);
     }
-    pthread_exit(NULL);
 }
 
 void print_to_log(string str)
