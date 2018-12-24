@@ -27,7 +27,7 @@ void* atm_thread (void* arg)
                     // not enough arguments
                     continue;
                 open_account(atm_id, id, password, amount);
-                sleep(atm_sleep);
+                usleep(atm_sleep);
 
             }
             else if(a == 'L')   //L <account id> <password>
@@ -100,6 +100,7 @@ void open_account(int atm_id, int id, int password, int init)
     {
         account *newAcc = new account(id, password, init);
         account_map.insert(std::make_pair(id, newAcc));
+        sleep(1);
         pthread_mutex_unlock(&open_account_lock);
         to_print = to_string(atm_id) + ": New account id is " + to_string(id) + " with password ";
         to_print += to_string(password) + " and initial balance " + to_string(init);
@@ -227,6 +228,7 @@ void transfer(int atm_id, int source, int password, int target, int amount)
                 to_print = to_string(atm_id) + ": Transfer " + to_string(amount) + " from account ";
                 to_print += to_string(source) + " to account " + to_string(target) + " new account balance is ";
                 to_print += to_string(sourceBalance) + " new target account balance is " + to_string(targetBalance);
+                sleep(1);
             }
             first_lock->unlock();
             second_lock->unlock();

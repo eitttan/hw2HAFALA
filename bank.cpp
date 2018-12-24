@@ -22,6 +22,7 @@ void* fees (void* arg)
     while(true) //TODO figure what to put here
         // maybe we can join in the main only the atms and that way the program will finish even though this loop is endless
     {
+        sleep(3);
         for (std::map<int, account *>::iterator it = account_map.begin(); it != account_map.end(); it++) {
             account *currAcc = it->second;
             if (currAcc->get_VIP())
@@ -33,7 +34,6 @@ void* fees (void* arg)
             to_print += to_string(amount) + "$ from account " + to_string(it->first) +"\n";
         }
         print_to_log(to_print);
-        usleep(fee_sleep);
     }
     pthread_exit(NULL);
 }

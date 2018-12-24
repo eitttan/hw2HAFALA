@@ -21,6 +21,7 @@ bool account::set_VIP()
     if (VIP)
         return  false;
     pthread_mutex_lock(&VIP_locker);
+    sleep(1);
     VIP = true;
     pthread_mutex_unlock(&VIP_locker);
     return  true;
@@ -35,6 +36,7 @@ bool account::get_VIP()
 int account::withdraw(int amount)
 {
     pthread_mutex_lock(&locker);
+    sleep(1);
     if (balance < amount)
     {
         pthread_mutex_unlock(&locker);
@@ -49,6 +51,7 @@ int account::deposit(int amount)
 {
     pthread_mutex_lock(&locker);
     balance = balance + amount;
+    sleep(1);
     int ret = balance;
     pthread_mutex_unlock(&locker);
     return ret;
@@ -77,6 +80,7 @@ int account::get_balance ()
     readers_num++;
     if (readers_num == 1)
         pthread_mutex_lock(&locker);
+    sleep(1);
     pthread_mutex_unlock(&readers);
     int bal = balance;
     pthread_mutex_lock(&readers);
