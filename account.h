@@ -27,6 +27,8 @@ public:
 
     bool check_password(int pass) const;
 
+    int get_pass() const;
+
     int get_balance();
     //transfer needs to happen "atomicly" for both accounts
     void lock();

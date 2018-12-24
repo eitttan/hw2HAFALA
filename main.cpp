@@ -4,7 +4,10 @@
 #include "account.h"
 #include "defines.h"
 #include "bank.h"
-std::map <int,account* > account_map;
+#include<bits/stdc++.h>
+//using namespace std;
+
+std::map <int,account*> account_map;
 ofstream log_file("log.txt");
 pthread_mutex_t open_account_lock;
 pthread_mutex_t write_to_log_lock;
@@ -34,7 +37,10 @@ int main(int argc, char* argv[]) {
    // pthread_t atm_threads;
    // pthread_create(&atm_threads, NULL, atm_thread, (void*)&first);
     pthread_t bank_thread;
+    pthread_t print_thread;
+
     pthread_create(&bank_thread, NULL, fees, NULL);
+    pthread_create(&print_thread, NULL, print, NULL);
     //pthread_join(atm_threads, NULL);
 
     for (int i = 0; i < NumberOfATMs; i++)
@@ -43,6 +49,7 @@ int main(int argc, char* argv[]) {
 
     }
     pthread_join(bank_thread, NULL);
+    pthread_join(print_thread, NULL);
     //all of this will be changed
 
     return 0;

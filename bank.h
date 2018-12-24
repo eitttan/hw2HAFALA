@@ -12,5 +12,7 @@
 
 
 void* fees (void* arg);
+void* print(void* arg);
+
 
 #endif //HW2_BANK_H

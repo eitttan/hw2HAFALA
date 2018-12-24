@@ -65,6 +65,12 @@ bool account::check_password(int pass) const
 {
     return (pass == password);
 }
+
+int account::get_pass() const
+{
+    return (password);
+}
+
 int account::get_balance ()
 {
     pthread_mutex_lock(&readers);
