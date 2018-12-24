@@ -252,3 +252,4 @@ bool check_account(int atm_id, int id)
 
 atm::atm(int id, string input): id(id), input(input)
 {}
+atm::atm(){}

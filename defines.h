@@ -13,6 +13,7 @@
 #include <mutex>
 #include <cstdbool>
 #include "account.h"
+#include "bank.h"
 #include "ATMs.h"
 #include <fstream>
 #include <sstream>

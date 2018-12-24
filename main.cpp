@@ -1,9 +1,9 @@
 
-#include "bank.cpp"
+//#include "bank.cpp"
 #include "ATMs.h"
 #include "account.h"
 #include "defines.h"
-
+#include "bank.h"
 std::map <int,account* > account_map;
 ofstream log_file("log.txt");
 pthread_mutex_t open_account_lock;
@@ -16,12 +16,32 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&write_to_log_lock, NULL);
 
     //for the first tests of basic ATM
-    atm first = atm(1, "short_atm.txt");
-    pthread_t atm_threads;
-    pthread_create(&atm_threads, NULL, atm_thread, (void*)&first);
+   // atm first = atm(1, "/home/compm/CLionProjects/hw2/short_atm.txt");
+   // parsing
+   const int NumberOfATMs = atoi(argv[1]);
+    pthread_t* atm_threads = new pthread_t[NumberOfATMs];
+    //pthread_t* ATMThreads = new pthread_t[NumberOfATMs];
+    atm* ATMs= new atm[NumberOfATMs];
+
+    for (int i = 0; i < NumberOfATMs; i++)
+    {
+        ATMs[i] = atm(i+1, argv[i + 2]);
+        //ThreadCheck = pthread_create(&ATMThreads[i] , NULL, ATMThreadFunc, (void *)&ATMs[i]);
+        pthread_create(&atm_threads[i], NULL, atm_thread, (void*)&ATMs[i]);
+
+
+    }
+   // pthread_t atm_threads;
+   // pthread_create(&atm_threads, NULL, atm_thread, (void*)&first);
     pthread_t bank_thread;
     pthread_create(&bank_thread, NULL, fees, NULL);
-    pthread_join(atm_threads, NULL);
+    //pthread_join(atm_threads, NULL);
+
+    for (int i = 0; i < NumberOfATMs; i++)
+    {
+        pthread_join(atm_threads[i], NULL);
+
+    }
     pthread_join(bank_thread, NULL);
     //all of this will be changed
 

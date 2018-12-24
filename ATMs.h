@@ -26,6 +26,7 @@ public:
     int id;
     string input;
     atm(int id, string input);
+    atm();
 };
 
 #endif //HW2_ATMS_H
