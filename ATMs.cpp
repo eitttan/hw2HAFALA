@@ -27,6 +27,8 @@ void* atm_thread (void* arg)
                     // not enough arguments
                     continue;
                 open_account(atm_id, id, password, amount);
+                usleep(atm_sleep);
+
             }
             else if(a == 'L')   //L <account id> <password>
             {
@@ -34,6 +36,8 @@ void* atm_thread (void* arg)
                     // not enough arguments
                     continue;
                 make_VIP(atm_id, id, password);
+                usleep(atm_sleep);
+
             }
             else if(a == 'D')   //D <account id> <password> <amount>
             {
@@ -41,6 +45,8 @@ void* atm_thread (void* arg)
                     // not enough arguments
                     continue;
                 deposit(atm_id, id, password, amount);
+                usleep(atm_sleep);
+
             }
             else if(a == 'W')   //W <account id> <password> <amount>
             {
@@ -48,6 +54,8 @@ void* atm_thread (void* arg)
                     // not enough arguments
                     continue;
                 withdraw(atm_id, id, password, amount);
+                usleep(atm_sleep);
+
             }
             else if(a == 'B')   //B <account id> <password>
             {
@@ -55,6 +63,8 @@ void* atm_thread (void* arg)
                     // not enough arguments
                     continue;
                 check_balance(atm_id, id, password);
+                usleep(atm_sleep);
+
             }
             else if(a == 'T')   //T <account id> <password> <target account id> <amount>
             {
@@ -62,6 +72,8 @@ void* atm_thread (void* arg)
                     // not enough arguments
                     continue;
                 transfer(atm_id, id, password, t_id, amount);
+                usleep(atm_sleep);
+
             }
             else //no such command
             {
