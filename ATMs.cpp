@@ -1,10 +1,12 @@
 //
-// description: ATM cpp file. module of atm methods.
+// description: ATM cpp file. module of atm methods. most of function in this file are 
+//		auxilary functions for atm module .the specific activation functions
+// 		in accounts.cpp file.
 //
 #include "ATMs.h"
 //*************************************************************************
 //* function name: atm_thread
-//* Description  : atm default c'tor and active instructions for each ATM
+//* Description  : atm thread active instructions for each ATM
 //* input   :   1. atm Name
 //              2. atm instruction file path.
 //* output: None
@@ -313,4 +315,11 @@ bool check_account(int atm_id, int id)
 
 atm::atm(int id, string input): id(id), input(input)
 {}
+//*************************************************************************
+//* function name: atm
+//* Description  : atm default c'tor
+//* input   :None
+//* output: None`
+//*************************************************************************
+
 atm::atm(){}

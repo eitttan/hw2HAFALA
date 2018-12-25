@@ -1,5 +1,6 @@
 //
-// Created by user on 11/12/18.
+// description: bank cpp file. contain methose that the "bank" do.
+// but, there isn't object class/ just methods for bank_thread
 //
 #ifndef HW2_BANK_C
 #define HW2_BANK_C
@@ -10,11 +11,16 @@
 # include "bank.h"
 
 int bank_balance=0;
+*************************************************************************
+//* function name:fees
+//* Description :takes fees from every non_VIP acount every 3 sec
+// 	and print to log the fee.
+//* input   :  none
+//* output: none
+//*************************************************************************
 
-//takes fees from every non_VIP acount every 3 seconds
 void* fees (void* arg)
 {
-    //bank_balance = 0;
     srand(time(NULL));
     int percent;
     int amount;
@@ -38,11 +44,17 @@ void* fees (void* arg)
     //pthread_exit(NULL);
 }
 
+*************************************************************************
+//* function name:print
+//* Description :print to screen ,the bank status every 0.5 sec
+//* input   :  none
+//* output: none
+//*************************************************************************
+
 
 void* print(void* arg)
 {
     while(true)
-        // maybe we can join in the main only the atms and that way the program will finish even though this loop is endless
     {
         usleep(print_sleep);
         string to_print;
@@ -67,7 +79,7 @@ void* print(void* arg)
             (it->second)->unlock();
         }
     }
-    //pthread_exit(NULL);
+
 }
 
 

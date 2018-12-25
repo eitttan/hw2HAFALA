@@ -1,5 +1,5 @@
 //
-// Created by compm on 22/12/18.
+// description: header file for bank module.
 //
 
 #ifndef HW2_BANK_H

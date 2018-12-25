@@ -1,5 +1,5 @@
 //
-// Created by user on 11/12/18.
+// description: header file for account module.
 //
 
 #ifndef HW2_ACCOUNT_H

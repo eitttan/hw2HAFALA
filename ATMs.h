@@ -1,5 +1,5 @@
 //
-// Created by user on 12/12/18.
+// description: header file for atm module.
 //
 
 #ifndef HW2_ATMS_H
