@@ -1,8 +1,14 @@
 //
-// Created by user on 11/12/18.
+// description: ATM cpp file. module of atm methods.
 //
 #include "ATMs.h"
-
+//*************************************************************************
+//* function name: atm_thread
+//* Description  : atm default c'tor and active instructions for each ATM
+//* input   :   1. atm Name
+//              2. atm instruction file path.
+//* output: None
+//*************************************************************************
 
 void* atm_thread (void* arg)
 {
@@ -71,11 +77,17 @@ void* atm_thread (void* arg)
         }
         else //empty line
             continue;
-       // usleep(atm_sleep);
     }
     pthread_exit(NULL);
 }
+//
 
+//*************************************************************************
+//* function name: open_account
+//* Description  : open new account by specific atm
+//* input   :atm_id, account_id ,password , init- first balance in account.
+//* output: None
+//*************************************************************************
 void open_account(int atm_id, int id, int password, int init)
 {
     string to_print;
@@ -98,6 +110,13 @@ void open_account(int atm_id, int id, int password, int init)
     }
     print_to_log(to_print);
 }
+
+//*************************************************************************
+//* function name: make_VIP
+//* Description  : set account as VIP
+//* input   : atm_id, account_id ,password
+//* output: None
+//*************************************************************************
 void make_VIP(int atm_id, int id,int password)
 {
     if (check_account(atm_id, id)) //valid account
@@ -114,6 +133,12 @@ void make_VIP(int atm_id, int id,int password)
         }
     }
 }
+//*************************************************************************
+//* function name: deposit
+//* Description  : deposit to account
+//* input   : atm_id, account_id ,password , amount to deposit
+//* output: None
+//*************************************************************************
 void deposit(int atm_id, int id,int password,int amount)
 {
     string to_print;
@@ -134,6 +159,12 @@ void deposit(int atm_id, int id,int password,int amount)
         print_to_log(to_print);
     }
 }
+//*************************************************************************
+//* function name: withdraw
+//* Description  : withdraw from account
+//* input   : atm_id, account_id ,password ,amount to withdraw
+//* output: None
+//*************************************************************************
 void withdraw(int atm_id, int id,int password,int amount)
 {
     string to_print;
@@ -162,6 +193,13 @@ void withdraw(int atm_id, int id,int password,int amount)
         print_to_log(to_print);
     }
 }
+
+//*************************************************************************
+//* function name: check_balance
+//* Description  : check the balance of account and print it
+//* input   : atm_id, account_id ,password
+//* output: None
+//*************************************************************************
 void check_balance(int atm_id, int id,int password)
 {
     string to_print;
@@ -182,6 +220,12 @@ void check_balance(int atm_id, int id,int password)
         print_to_log(to_print);
     }
 }
+//*************************************************************************
+//* function name: transfer
+//* Description  : transfer between accounts
+//* input   :atm_id, account_source_id ,password, account_target_id, ammount
+//* output: None
+//*************************************************************************
 void transfer(int atm_id, int source, int password, int target, int amount)
 {
     string to_print;
@@ -234,7 +278,12 @@ void transfer(int atm_id, int source, int password, int target, int amount)
         print_to_log(to_print);
     }
 }
-
+//*************************************************************************
+//* function name: print_to_log
+//* Description  : print to lig file
+//* input   :string
+//* output: None
+//*************************************************************************
 void print_to_log(string str)
 {
     pthread_mutex_lock(&write_to_log_lock);
@@ -254,7 +303,12 @@ bool check_account(int atm_id, int id)
     }
     return  true;
 }
-
+//*************************************************************************
+//* function name: atm
+//* Description  : atm c'tor
+//* input   :atm_id, file
+//* output: None`
+//*************************************************************************
 
 
 atm::atm(int id, string input): id(id), input(input)
